@@ -49,6 +49,8 @@ public class Agent implements Serializable{
 
     private double bid;
 
+    private double sumCost;
+
     // the num of tasks which have completed in high quality
     private double hd;
 

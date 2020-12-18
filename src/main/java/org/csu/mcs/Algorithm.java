@@ -154,12 +154,21 @@ public class Algorithm {
             res = agent.getBid();
         }
 
+        agent.setCost(agent.getCost(task)+agent.getCost());
         agent.setBid(res);
     }
 
     public static void payForAgent(Agent agent){
         Random random = new Random();
-        double pExtra = agent
+        List<Double> bidSet = agent.getBidSet();
+        double sumBid = 0;
+        for (int i = 0; i < bidSet.size(); i++) {
+            Double temp = bidSet.get(i);
+            sumBid+=temp;
+        }
+        double pExtra = agent.getBid() * (itsiCal(ITSI_TS) - itsiCal(ITSI_TS+ITSI_T));
+        double pCeil = Math.min(sumBid - agent.getCost(),sumBid*(1-itsiCal(ITSI_T)));
+        double p = pExtra+(pCeil-pExtra)*random.nextDouble();
         if (random.nextBoolean()) {
 
         }else{
