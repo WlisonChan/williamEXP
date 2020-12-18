@@ -41,6 +41,10 @@ public class Main {
     // kmeans - type, the calculation distance formula type.
     public static final int KMEANS_TYPE = 1;
 
+    // the round of mcs
+    public static int z = 1;
+    public static final double Z_LIMIT = 6;
+
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         List<Point> taskList = initTaskSet();
@@ -48,10 +52,16 @@ public class Main {
         List<Point> points = copyTasks(taskList);
         List<Agent> agents = copyAgents(agentList);
 
-        AlgorithmRun(taskList,agentList);
-        System.out.println("----------------------------------------------");
-        DetectiveAlgorithmRun(points,agents);
-
+        for(;z <= Z_LIMIT;z++) {
+            log.info("---------- The round of [{}] is start ----------",z);
+            AlgorithmRun(taskList, agentList);
+            System.out.println("~~~~~~~~~~~~                   ~~~~~~~~~~~~~");
+            DetectiveAlgorithmRun(points, agents);
+            taskList = initTaskSet();
+            points = copyTasks(taskList);
+        }
+        agentList.stream().forEach(e->Algorithm.payForAgent(e));
+        printAgentInfo(agentList);
     }
 
 
@@ -145,7 +155,7 @@ public class Main {
             agent.setQuaI(0.3+random.nextDouble()/2.0);
             agent.setKi(random.nextDouble()*K_I);
             agent.setLi(random.nextDouble()*L_I);
-            agent.setGamma(Algorithm.gamma+random.nextDouble()/2.0);
+            agent.setGamma(random.nextDouble()/2.0);
 
             agents.add(agent);
         }
@@ -194,5 +204,15 @@ public class Main {
                 .sum();
         log.info("The sum of tasks' quality is [{}]",sum);
         log.info("The avg of tasks' quality is [{}]",avg);
+    }
+
+    public static void printAgentInfo(List<Agent> agentList){
+        agentList.stream()
+                .forEach(e->{
+                    double payment = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+                    log.info("Agent's id [{}] has completed [{}], get payment [{}]",
+                            e.getId(),e.getBidSet().size(),payment);
+                    //System.out.println(e.getBidSet());
+                });
     }
 }

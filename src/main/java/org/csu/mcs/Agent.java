@@ -71,6 +71,7 @@ public class Agent implements Serializable{
         this.y = y;
         this.taskSet = new ArrayList<>();
         this.taskSeq = new ArrayList<>();
+        this.bidSet = new ArrayList<>();
     }
 
     // The cost of performing the target task
