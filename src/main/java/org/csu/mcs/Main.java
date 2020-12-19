@@ -52,26 +52,26 @@ public class Main {
         List<Point> points = copyTasks(taskList);
         List<Agent> agents = copyAgents(agentList);
 
-        for(;z <= Z_LIMIT;z++) {
-            log.info("---------- The round of [{}] is start ----------",z);
+        for (; z <= Z_LIMIT; z++) {
+            log.info("---------- The round of [{}] is start ----------", z);
             AlgorithmRun(taskList, agentList);
             System.out.println("~~~~~~~~~~~~                   ~~~~~~~~~~~~~");
             DetectiveAlgorithmRun(points, agents);
             taskList = initTaskSet();
             points = copyTasks(taskList);
         }
-        agentList.stream().forEach(e->Algorithm.payForAgent(e));
+        agentList.stream().forEach(e -> Algorithm.payForAgent(e));
         printAgentInfo(agentList);
     }
 
 
-    public static void AlgorithmRun(List<Point> taskList,List<Agent> agentList)
+    public static void AlgorithmRun(List<Point> taskList, List<Agent> agentList)
             throws IOException, ClassNotFoundException {
 
         Algorithm.calAvgQuality(taskList);
         Algorithm.calAvgValue(taskList);
 
-        Algorithm.selectTasks(taskList,agentList);
+        Algorithm.selectTasks(taskList, agentList);
 
         Algorithm.refreshBidSet(agentList);
         //Algorithm.printAgent(agentList);
@@ -80,14 +80,13 @@ public class Main {
         printQualityInfo(taskList);
     }
 
-    public static void DetectiveAlgorithmRun(List<Point> taskList,List<Agent> agentList) throws IOException {
+    public static void DetectiveAlgorithmRun(List<Point> taskList, List<Agent> agentList) throws IOException {
 
-        DetectiveAlgorithm.taskSelection(agentList,taskList);
+        DetectiveAlgorithm.taskSelection(agentList, taskList);
 
         printInfo(taskList);
         printQualityInfo(taskList);
     }
-
 
 
     public static List<Point> initTaskSet() throws IOException {
@@ -111,7 +110,7 @@ public class Main {
             float curY = random.nextFloat() * Y_SIZE;
             //System.out.println(curX+" "+curY);
             Point point = new Point(curX, curY);
-            double quality = random.nextDouble()*QUALITY_LIMIT+QUALITY_LIMIT*0.3;
+            double quality = random.nextDouble() * QUALITY_LIMIT + QUALITY_LIMIT * 0.3;
             double val = quality;
             point.setQuality(quality);
             point.setValue(val);
@@ -152,11 +151,11 @@ public class Main {
             //agent.setCost4r(random.nextDouble()*COST_LIMIT);
             agent.setId(i);
             agent.setId(i);
-            agent.setValI(random.nextDouble()/2+1);
-            agent.setQuaI(0.3+random.nextDouble()/2.0);
-            agent.setKi(random.nextDouble()*K_I);
-            agent.setLi(random.nextDouble()*L_I);
-            agent.setGamma(0.1+random.nextDouble()/10.0);
+            agent.setValI(random.nextDouble() / 2 + 1);
+            agent.setQuaI(0.3 + random.nextDouble() / 2.0);
+            agent.setKi(random.nextDouble() * K_I);
+            agent.setLi(random.nextDouble() * L_I);
+            agent.setGamma(0.1 + random.nextDouble() / 10.0);
 
             agents.add(agent);
         }
@@ -187,32 +186,33 @@ public class Main {
 
     /**
      * 任务完成状态打印
+     *
      * @param taskList
      */
-    public static void printInfo(List<Point> taskList){
+    public static void printInfo(List<Point> taskList) {
         int sum = taskList.stream().mapToInt(Point::hasCompleted).sum();
-        log.info("The sum of tasks which has completed is [{}]",sum);
+        log.info("The sum of tasks which has completed is [{}]", sum);
     }
 
-    public static void printQualityInfo(List<Point> taskList){
+    public static void printQualityInfo(List<Point> taskList) {
         double avg = taskList.stream()
-                .filter(e->e.getAgent()!=null)
+                .filter(e -> e.getAgent() != null)
                 .mapToDouble(Point::getQuality)
                 .average().orElse(0D);
         double sum = taskList.stream()
-                .filter(e->e.getAgent()!=null)
+                .filter(e -> e.getAgent() != null)
                 .mapToDouble(Point::getQuality)
                 .sum();
-        log.info("The sum of tasks' quality is [{}]",sum);
-        log.info("The avg of tasks' quality is [{}]",avg);
+        log.info("The sum of tasks' quality is [{}]", sum);
+        log.info("The avg of tasks' quality is [{}]", avg);
     }
 
-    public static void printAgentInfo(List<Agent> agentList){
+    public static void printAgentInfo(List<Agent> agentList) {
         agentList.stream()
-                .forEach(e->{
+                .forEach(e -> {
                     double payment = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
                     log.info("Agent's id [{}] has completed [{}], get payment [{}]",
-                            e.getId(),e.getBidSet().size(),payment);
+                            e.getId(), e.getBidSet().size(), payment);
                     //System.out.println(e.getBidSet());
                 });
     }

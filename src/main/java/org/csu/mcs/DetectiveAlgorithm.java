@@ -16,7 +16,7 @@ public class DetectiveAlgorithm {
     public static final double DISTANCE_COEFFICIENT = 1.0;
 
     public static void taskSelection(List<Agent> agentList, List<Point> taskList) {
-        while(true) {
+        while (true) {
             boolean flag = true;
             initAgentState(agentList);
             for (int i = 0; i < agentList.size(); i++) {
@@ -25,7 +25,7 @@ public class DetectiveAlgorithm {
                 double maxProfit = Double.MIN_VALUE;
                 for (int j = 0; j < taskList.size(); j++) {
                     Point task = taskList.get(j);
-                    if (task.getAgent() != null){
+                    if (task.getAgent() != null) {
                         continue;
                     }
                     double tempProfit = task.getValue() - agent.getCost(task);
@@ -34,7 +34,7 @@ public class DetectiveAlgorithm {
                         cur = j;
                     }
                 }
-                if (cur <0){
+                if (cur < 0) {
                     continue;
                 }
                 Point task = taskList.get(cur);
@@ -56,17 +56,17 @@ public class DetectiveAlgorithm {
                     agent.setProfit(maxProfit);
                 }
             }
-            if (flag){
+            if (flag) {
                 break;
             }
             selectWinner(taskList);
         }
     }
 
-    public static void selectWinner(List<Point> taskList){
+    public static void selectWinner(List<Point> taskList) {
         for (int i = 0; i < taskList.size(); i++) {
             Point task = taskList.get(i);
-            if (task.getAgentList().size() == 0 || task.getAgent() !=null) {
+            if (task.getAgentList().size() == 0 || task.getAgent() != null) {
                 continue;
             }
             List<Agent> agentList = task.getAgentList();
@@ -85,21 +85,21 @@ public class DetectiveAlgorithm {
         }
     }
 
-    public static void completeTask(Agent agent){
+    public static void completeTask(Agent agent) {
         List<Point> taskSet = agent.getTaskSet();
-        taskSet.stream().forEach(e->e.setAgent(agent));
-        if (taskSet.size()>1){
+        taskSet.stream().forEach(e -> e.setAgent(agent));
+        if (taskSet.size() > 1) {
             log.info("The tasks' id are [{}] and [{}] which is completed by agent [{}]",
-                    taskSet.get(0).getId(),taskSet.get(1).getId(),agent.getId());
-        }else {
+                    taskSet.get(0).getId(), taskSet.get(1).getId(), agent.getId());
+        } else {
             log.info("The task id is [{}] which is completed by agent [{}]",
-                    taskSet.get(0).getId(),agent.getId());
+                    taskSet.get(0).getId(), agent.getId());
         }
     }
 
-    public static void updateLocation(Agent agent){
+    public static void updateLocation(Agent agent) {
         List<Point> taskSet = agent.getTaskSet();
-        Point task = taskSet.get(taskSet.size()-1);
+        Point task = taskSet.get(taskSet.size() - 1);
         agent.setX(task.getX());
         agent.setY(task.getY());
     }
@@ -109,7 +109,7 @@ public class DetectiveAlgorithm {
         Point cur = null;
         for (int i = 0; i < taskList.size(); i++) {
             Point taskB = taskList.get(i);
-            if (task.getId() == taskB.getId()){
+            if (task.getId() == taskB.getId()) {
                 continue;
             }
             double v = calCost4Task(task, taskB);
@@ -128,11 +128,13 @@ public class DetectiveAlgorithm {
         return COST_COEFFICIENT + DISTANCE_COEFFICIENT * d;
     }
 
-    public static void initAgentState(List<Agent> agentList){
+    public static void initAgentState(List<Agent> agentList) {
         agentList.stream()
-                .forEach(e->
-                {e.getTaskSet().clear();
-                e.setProfit(0);});
+                .forEach(e ->
+                {
+                    e.getTaskSet().clear();
+                    e.setProfit(0);
+                });
     }
 
 }

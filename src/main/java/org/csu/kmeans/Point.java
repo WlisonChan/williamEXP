@@ -53,7 +53,7 @@ public class Point implements Serializable {
         this.agentList = new ArrayList<>();
     }
 
-    public int hasCompleted(){
+    public int hasCompleted() {
         return getAgent() == null ? 0 : 1;
     }
 
@@ -136,9 +136,10 @@ public class Point implements Serializable {
     public void setAgentList(List<Agent> agentList) {
         this.agentList = agentList;
     }
+
     @Override
     public String toString() {
-        return  x + " " + y;
+        return x + " " + y;
     }
 
     /**

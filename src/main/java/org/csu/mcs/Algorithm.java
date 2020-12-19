@@ -161,8 +161,8 @@ public class Algorithm {
         }
     }
 
-    public static void refreshBidSet(List<Agent> agentList){
-        agentList.stream().forEach(e->e.getForeBidSet().add(e.getBidSet()));
+    public static void refreshBidSet(List<Agent> agentList) {
+        agentList.stream().forEach(e -> e.getForeBidSet().add(e.getBidSet()));
     }
 
     public static void updateReward(Point task, Agent agent) {
