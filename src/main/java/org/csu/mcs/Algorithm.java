@@ -86,14 +86,22 @@ public class Algorithm {
                     Random random = new Random();
 
                     double bid = (1 + random.nextDouble() * 0.1) * cost;
-                    if (Main.z == 1 && agent.getBidSet().size() != 0) {
+                    if (Main.z == 1 && agent.getForeBidSet().size() != 0) {
                         double bSum = 0;
-                        List<Double> bidSet = agent.getBidSet();
-                        for (int j = 0; j < bidSet.size(); j++) {
-                            bSum += Math.pow(agent.getGamma(), Main.z - 1 - j) * bidSet.get(j);
-                        }
-                        bid = cost + bSum;
+                        List<List<Double>> bidSet = agent.getForeBidSet();
+                        for (int j = bidSet.size() - 1; j >= 0; j--) {
+                            double curSum = bidSet.get(j).stream().mapToDouble(Double::doubleValue).sum();
+                            bSum += Math.pow(agent.getGamma(), bidSet.size() - j) * curSum;
 
+                        }
+                        /*
+                        for (int j = 0; j < bidSet.size(); j++) {
+                            double curSum = bidSet.get(j).stream().mapToDouble(Double::doubleValue).sum();
+                            bSum += Math.pow(agent.getGamma(), Main.z - 1 + j) * curSum;
+                            System.out.println(" bsum " + bSum);
+                        }*/
+                        bid = cost + bSum;
+                        //System.out.println("bsum    " + bSum + "   cost   " + cost);
                         agent.setBid(bid);
                     } else {
                         agent.setBid(bid);
@@ -105,11 +113,13 @@ public class Algorithm {
                 //System.out.println();
             }
 
-/*            for (int i = 0; i < taskList.size(); i++) {
+            /*
+            for (int i = 0; i < taskList.size(); i++) {
                 Point point = taskList.get(i);
                 int size = point.getAgentList().size();
                 System.out.println("taskId :"+point.getId()+" az:"+size);
-            }*/
+            }
+            */
 
             //printTask(taskList);
             calR(agentList);
@@ -144,27 +154,32 @@ public class Algorithm {
             Agent winner = agentList.get(cur);
             task.setAgent(winner);
             winner.setHd(winner.getHd() + 1);
-            updateLocation(winner, task);
             updateReward(task, winner);
+            updateLocation(winner, task);
 
             log.info("The task id is [{}] which is completed by agent [{}]", task.getId(), winner.getId());
         }
     }
 
+    public static void refreshBidSet(List<Agent> agentList){
+        agentList.stream().forEach(e->e.getForeBidSet().add(e.getBidSet()));
+    }
+
     public static void updateReward(Point task, Agent agent) {
         double res = 0;
-        System.out.println("origin    "+agent.getBid()+"     r     "+r);
+        //System.out.println(" distance " + task.getX() + " " + task.getY() + " " + agent.getX() + " " + agent.getY());
+        //System.out.println("origin    " + agent.getBid() + "      cost     " + agent.getCost(task) + "     r     " + r);
         if (agent.getBid() > r) {
             double cost = agent.getCost(task);
             double sigma = Math.max(0.8, cost / agent.getBid());
             double bSum = agent.getBid() - cost;
             res = sigma * (cost + bSum) + 2 * (1 - sigma) * bSum * Math.atan(agent.getBid() - r) / Math.PI;
-            System.out.println("res1 "+ res);
+            //System.out.println("res1 " + res);
         } else {
             res = agent.getBid();
-            System.out.println("res2 "+ res);
+            //System.out.println("res2 " + res);
         }
-        System.out.println("res      ===================================================================================="+res);
+        //System.out.println("res      ====================================================================================" + res);
         agent.setCost(agent.getCost(task) + agent.getCost());
         agent.setBid(res);
         agent.getBidSet().add(res);
@@ -200,12 +215,13 @@ public class Algorithm {
         double wins = agentList.stream()
                 .filter(e -> e.getBid() != 0)
                 .count();
-        if (Main.z == 1) {
+        r = avg;
+        /*if (Main.z == 1) {
             r = avg;
         } else {
             r = (r * sumWinner + avg) / (sumWinner + wins);
         }
-        sumWinner += wins;
+        sumWinner += wins;*/
     }
 
     public static void updateLocation(Agent agent, Point task) {
@@ -236,7 +252,7 @@ public class Algorithm {
     }
 
     public static void printTask(List<Point> taskList) {
-        taskList.stream().forEach(e -> System.out.println(e.getId() + " " + e.getQuality() + "     " + e.getValue()));
+        taskList.stream().forEach(e -> System.out.println(e.getId() + " " + e.getQuality() + " " + e.getValue()));
     }
 
     public static void printAgent(List<Agent> agentList) {

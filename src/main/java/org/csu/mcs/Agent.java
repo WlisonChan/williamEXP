@@ -39,6 +39,8 @@ public class Agent implements Serializable{
     private List<List<Point>> taskSeq;
     // bid set
     private List<Double> bidSet;
+    // foreBidSet
+    private List<List<Double>> foreBidSet;
 
     // DA the profit of one round
     private double profit;
@@ -72,6 +74,7 @@ public class Agent implements Serializable{
         this.taskSet = new ArrayList<>();
         this.taskSeq = new ArrayList<>();
         this.bidSet = new ArrayList<>();
+        this.foreBidSet = new ArrayList<>();
     }
 
     // The cost of performing the target task

@@ -73,6 +73,7 @@ public class Main {
 
         Algorithm.selectTasks(taskList,agentList);
 
+        Algorithm.refreshBidSet(agentList);
         //Algorithm.printAgent(agentList);
         //Algorithm.printTask(taskList);
         printInfo(taskList);
@@ -155,7 +156,7 @@ public class Main {
             agent.setQuaI(0.3+random.nextDouble()/2.0);
             agent.setKi(random.nextDouble()*K_I);
             agent.setLi(random.nextDouble()*L_I);
-            agent.setGamma(random.nextDouble()/2.0);
+            agent.setGamma(0.1+random.nextDouble()/10.0);
 
             agents.add(agent);
         }
