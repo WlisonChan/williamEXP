@@ -33,6 +33,7 @@ public class Agent implements Serializable{
 
     // complete task set
     private List<Point> taskSet;
+    private List<Point> taskDASet;
     // record the task seq
     private List<List<Point>> taskSeq;
     // bid set
@@ -83,6 +84,7 @@ public class Agent implements Serializable{
         this.thisRoundBidSet = new ArrayList<>();
         this.costSet = new ArrayList<>();
         this.hdTask = new ArrayList<>();
+        this.taskDASet = new ArrayList<>();
     }
 
     // The cost of performing the target task

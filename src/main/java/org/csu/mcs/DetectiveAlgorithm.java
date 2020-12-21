@@ -101,6 +101,9 @@ public class DetectiveAlgorithm {
             reward+=task.getReward();
             agent.getBidSet().add(task.getReward());
             agent.getCostSet().add(agent.getCost(task));
+            agent.getTaskDASet().add(task);
+            System.out.println(agent.getTaskDASet());
+
             budget-=task.getReward();
         }
         agent.setPay(agent.getPay()+reward);

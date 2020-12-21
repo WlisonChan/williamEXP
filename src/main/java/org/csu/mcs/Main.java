@@ -19,9 +19,9 @@ public class Main {
     // y size for map
     public static final int Y_SIZE = 1000;
     // the number of tasks.
-    public static final int TASK_NUM = 100;
+    public static final int TASK_NUM = 90;
     // the number of workers.
-    public static final int WORKER_NUM = 10;
+    public static final int WORKER_NUM = 5;
     // budget
     public static final double BUDGET = 10000;
     // the upper limit of moving.
@@ -93,6 +93,7 @@ public class Main {
         //Algorithm.printAgent(agentList);
         //Algorithm.printTask(taskList);
         printInfo(taskList);
+        System.out.println("-------- --------- -------- --------- ------------ ------- ------------ ---------- -------");
         printQualityInfo(taskList);
     }
 
@@ -237,6 +238,19 @@ public class Main {
                             e.getId(), e.getBidSet().size(), e.getPay(), sumCost, e.getEi());
                     //System.out.println(e.getBidSet());
                 });
+
+        double sum = 0;
+        double num = 0;
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskDASet = agent.getTaskSet();
+            for (int j = 0; j < taskDASet.size(); j++) {
+                Point task = taskDASet.get(j);
+                sum+=task.getQuality();
+                num++;
+            }
+        }
+        log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
 //        agentList.stream()
 //                .forEach(e -> {
 //                    System.out.println(e.getId() + " " + e.getEi());
@@ -265,12 +279,25 @@ public class Main {
                 .mapToDouble(e -> e.getCostSet().size())
                 .sum();
         log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
+
         agentList.stream().forEach(e -> {
             double costSum = e.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
-
             log.info("Agent's id [{}] has completed [{}], get payment [{}], cost is [{}]",
                     e.getId(), e.getBidSet().size(), e.getPay(), costSum);
         });
+
+        double sum = 0;
+        double num = 0;
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskDASet = agent.getTaskDASet();
+            for (int j = 0; j < taskDASet.size(); j++) {
+                Point task = taskDASet.get(j);
+                sum+=task.getQuality();
+                num++;
+            }
+        }
+        log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
     }
 
 }
