@@ -1,8 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="04f919b5-f368-46e5-9bd1-c09a694730fc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+<<<<<<< HEAD
+=======
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Agent.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/DetectiveAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/DetectiveAlgorithm.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/out.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/Agent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/Agent.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/DetectiveAlgorithm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/DetectiveAlgorithm.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/out.txt" afterDir="false" />
+>>>>>>> de4b5eaa64594acde3272fdcfe66622e70ce2df9
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,8 +54,8 @@
   <component name="MavenImportPreferences">
     <option name="generalSettings">
       <MavenGeneralSettings>
-        <option name="mavenHome" value="D:/apache-maven-3.6.3" />
-        <option name="userSettingsFile" value="D:\apache-maven-3.6.3\conf\settings.xml" />
+        <option name="mavenHome" value="/usr/local/apache-maven-3.6.3" />
+        <option name="userSettingsFile" value="/usr/local/apache-maven-3.6.3/conf/settings.xml" />
       </MavenGeneralSettings>
     </option>
   </component>
@@ -67,13 +99,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -89,12 +132,32 @@
       <workItem from="1608172874666" duration="18069000" />
       <workItem from="1608218616822" duration="455000" />
       <workItem from="1608219081595" duration="7082000" />
+<<<<<<< HEAD
       <workItem from="1608260437063" duration="15757000" />
+=======
+      <workItem from="1608260437063" duration="15312000" />
+      <workItem from="1608302271676" duration="6505000" />
+      <workItem from="1608359715728" duration="5909000" />
+      <workItem from="1608512876420" duration="13787000" />
+      <workItem from="1608540001834" duration="4931000" />
+>>>>>>> de4b5eaa64594acde3272fdcfe66622e70ce2df9
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="2" />
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="WindowStateProjectService">
     <state x="944" y="211" key="#Getter_Template" timestamp="1608187440348">
@@ -114,6 +177,7 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="663" y="240" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1608260454914" />
+<<<<<<< HEAD
     <state width="1417" height="590" key="GridCell.Tab.0.bottom" timestamp="1608300049992">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -135,6 +199,29 @@
     <state width="1417" height="590" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608300049992" />
     <state width="1398" height="395" key="GridCell.Tab.0.right/0.25.1440.817@0.25.1440.817" timestamp="1608226734099" />
     <state width="1417" height="590" key="GridCell.Tab.1.bottom" timestamp="1608300049993">
+=======
+    <state width="1398" height="561" key="GridCell.Tab.0.bottom" timestamp="1608552198629">
+      <screen x="0" y="25" width="1440" height="817" />
+    </state>
+    <state width="1417" height="629" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
+    <state width="1398" height="561" key="GridCell.Tab.0.bottom/0.25.1440.817@0.25.1440.817" timestamp="1608552198629" />
+    <state width="1398" height="561" key="GridCell.Tab.0.center" timestamp="1608552198628">
+      <screen x="0" y="25" width="1440" height="817" />
+    </state>
+    <state width="1417" height="629" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
+    <state width="1398" height="561" key="GridCell.Tab.0.center/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
+    <state width="1398" height="561" key="GridCell.Tab.0.left" timestamp="1608552198628">
+      <screen x="0" y="25" width="1440" height="817" />
+    </state>
+    <state width="1417" height="629" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050538" />
+    <state width="1398" height="561" key="GridCell.Tab.0.left/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
+    <state width="1398" height="561" key="GridCell.Tab.0.right" timestamp="1608552198628">
+      <screen x="0" y="25" width="1440" height="817" />
+    </state>
+    <state width="1417" height="629" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
+    <state width="1398" height="561" key="GridCell.Tab.0.right/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
+    <state width="1417" height="590" key="GridCell.Tab.1.bottom" timestamp="1608280636712">
+>>>>>>> de4b5eaa64594acde3272fdcfe66622e70ce2df9
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1417" height="590" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608300049993" />
@@ -149,20 +236,26 @@
     <state width="1417" height="590" key="GridCell.Tab.1.right" timestamp="1608300049993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
+<<<<<<< HEAD
     <state width="1417" height="590" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608300049993" />
     <state x="384" y="130" key="SettingsEditor" timestamp="1608260458164">
       <screen x="0" y="0" width="1920" height="1040" />
+=======
+    <state width="1417" height="590" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608280636712" />
+    <state x="288" y="25" width="1024" height="817" key="SettingsEditor" timestamp="1608302402974">
+      <screen x="0" y="25" width="1440" height="817" />
+>>>>>>> de4b5eaa64594acde3272fdcfe66622e70ce2df9
     </state>
     <state x="384" y="130" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1608260458164" />
-    <state x="288" y="114" key="SettingsEditor/0.25.1440.817@0.25.1440.817" timestamp="1608219060196" />
+    <state x="288" y="25" width="1024" height="817" key="SettingsEditor/0.25.1440.817@0.25.1440.817" timestamp="1608302402974" />
     <state x="680" y="268" key="run.anything.popup" timestamp="1608211571834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="680" y="268" key="run.anything.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1608211571834" />
-    <state x="513" y="179" width="894" height="861" key="search.everywhere.popup" timestamp="1608298732459">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="385" y="166" width="670" height="676" key="search.everywhere.popup" timestamp="1608363808240">
+      <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state x="513" y="179" width="894" height="861" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1608298732459" />
-    <state x="385" y="166" width="670" height="676" key="search.everywhere.popup/0.25.1440.817@0.25.1440.817" timestamp="1608224199782" />
+    <state x="385" y="166" width="670" height="676" key="search.everywhere.popup/0.25.1440.817@0.25.1440.817" timestamp="1608363808240" />
   </component>
 </project>

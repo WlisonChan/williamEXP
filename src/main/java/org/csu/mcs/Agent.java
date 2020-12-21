@@ -6,9 +6,7 @@ import org.csu.kmeans.Point;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 public class Agent implements Serializable{
@@ -35,10 +33,16 @@ public class Agent implements Serializable{
 
     // complete task set
     private List<Point> taskSet;
+    private List<Point> taskDASet;
     // record the task seq
     private List<List<Point>> taskSeq;
     // bid set
     private List<Double> bidSet;
+    private List<Double> thisRoundBidSet;
+    // foreBidSet
+    private List<List<Double>> foreBidSet;
+    // costSet
+    private List<Double> costSet;
 
     // DA the profit of one round
     private double profit;
@@ -51,8 +55,12 @@ public class Agent implements Serializable{
 
     private double sumCost;
 
+    private double ei;
+
     // the num of tasks which have completed in high quality
     private double hd;
+    // Cumulative hd task
+    private List<Double> hdTask;
 
     // current location of participant
     private float x;
@@ -71,6 +79,12 @@ public class Agent implements Serializable{
         this.y = y;
         this.taskSet = new ArrayList<>();
         this.taskSeq = new ArrayList<>();
+        this.bidSet = new ArrayList<>();
+        this.foreBidSet = new ArrayList<>();
+        this.thisRoundBidSet = new ArrayList<>();
+        this.costSet = new ArrayList<>();
+        this.hdTask = new ArrayList<>();
+        this.taskDASet = new ArrayList<>();
     }
 
     // The cost of performing the target task
