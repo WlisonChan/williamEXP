@@ -22,7 +22,7 @@ public class Point implements Serializable {
     // id
     private int id;
 
-    // the reward after completing this task.
+    // the reward after completing this task. DA
     private double reward;
 
     private double value;

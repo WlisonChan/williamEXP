@@ -1,13 +1,8 @@
 package org.csu.mcs;
 
 import lombok.extern.slf4j.Slf4j;
-import org.csu.kmeans.Cluster;
-import org.csu.kmeans.Kmeans;
-import org.csu.kmeans.KmeansModel;
 import org.csu.kmeans.Point;
-import sun.management.resources.agent;
 
-import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,20 +11,24 @@ import java.util.Random;
 @Slf4j
 public class Algorithm {
     //parameter setting
+    public static double budget = 0;
 
     // PSRD's parameter
     public static final double VAL_I = 1.03;
     public static final double QUL_I = 0.81;
-    public static final double D_QUALITY = 5;
+    public static final double D_QUALITY = Main.Z_LIMIT * 2;
 
     public static final double PSRD_A = 0.3;
     public static final double PSRD_B = 1 - PSRD_A;
+    public static final double PSRD_E = 0.05;
 
 
     // cal avg quality of tasks
     public static double avgQuality = 0;
     // cal avg value of tasks
     public static double avgValue = 0;
+    // history's avgQuality
+    public static List<Double> hAvgQ;
 
     // the advice price of platform.
     public static double r = 0;
@@ -43,9 +42,14 @@ public class Algorithm {
     public static final double ITSI_GAMMA = 0.03;
     public static final double ITSI_TS = 100;
 
+    static {
+        hAvgQ = new ArrayList<>();
+    }
+
     // cal avg quality of tasks
     public static void calAvgQuality(List<Point> taskList) {
         avgQuality = taskList.stream().mapToDouble(Point::getQuality).average().orElse(0D);
+        hAvgQ.add(avgQuality);
         log.info("The avgQuality's value is [{}]", avgQuality);
     }
 
@@ -56,7 +60,7 @@ public class Algorithm {
 
     public static void selectTasks(List<Point> taskList, List<Agent> agentList) throws IOException, ClassNotFoundException {
         while (true) {
-            int k = 0;
+            boolean flag = false;
             initAgentState(agentList);
             //System.out.println(agentList.size());
             for (int i = 0; i < agentList.size(); i++) {
@@ -92,7 +96,6 @@ public class Algorithm {
                         for (int j = bidSet.size() - 1; j >= 0; j--) {
                             double curSum = bidSet.get(j).stream().mapToDouble(Double::doubleValue).sum();
                             bSum += Math.pow(agent.getGamma(), bidSet.size() - j) * curSum;
-
                         }
                         /*
                         for (int j = 0; j < bidSet.size(); j++) {
@@ -107,10 +110,7 @@ public class Algorithm {
                         agent.setBid(bid);
                     }
 
-
-                    k = 1;
                 }
-                //System.out.println();
             }
 
             /*
@@ -123,46 +123,52 @@ public class Algorithm {
 
             //printTask(taskList);
             calR(agentList);
-            selectWinner(taskList);
-/*            try {
-                System.out.println("-------------------sleep 1s-------------------");
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }*/
-            if (k == 0) {
+            flag = selectWinner(taskList);
+            if (!flag) {
                 break;
             }
         }
     }
 
-    public static void selectWinner(List<Point> taskList) {
+    public static Boolean selectWinner(List<Point> taskList) {
+        boolean flag = false;
         for (int i = 0; i < taskList.size(); i++) {
             Point task = taskList.get(i);
             List<Agent> agentList = task.getAgentList();
             if (agentList.size() == 0 || task.getAgent() != null) {
                 continue;
             }
-            int cur = 0;
-            double cost = agentList.get(0).getCost(task);
-            for (int j = 1; j < agentList.size(); j++) {
+            int cur = -1;
+            double cost = Double.MAX_VALUE;
+            for (int j = 0; j < agentList.size(); j++) {
                 Agent agent = agentList.get(j);
-                if (agent.getCost(task) < cost && agent.getBid() < task.getValue()) {
+                if (agent.getCost(task) < cost && agent.getBid() < task.getValue() && budget - agent.getBid() >=0) {
                     cur = j;
+                    cost = agent.getCost(task);
                 }
             }
-            Agent winner = agentList.get(cur);
-            task.setAgent(winner);
-            winner.setHd(winner.getHd() + 1);
-            updateReward(task, winner);
-            updateLocation(winner, task);
+            if (cur >= 0) {
+                Agent winner = agentList.get(cur);
+                budget-=winner.getBid();
+                task.setAgent(winner);
+                winner.getTaskSet().add(task);
+                winner.getCostSet().add(cost);
+                winner.setHd(winner.getHd() + 1);
+                updateReward(task, winner);
+                if (task.getQuality() >= avgQuality) {
+                    winner.getHdTask().add(task.getValue());
+                }
+                updateLocation(winner, task);
 
-            log.info("The task id is [{}] which is completed by agent [{}]", task.getId(), winner.getId());
+                log.info("The task id is [{}] which is completed by agent [{}]", task.getId(), winner.getId());
+                flag = true;
+            }
         }
+        return flag;
     }
 
     public static void refreshBidSet(List<Agent> agentList) {
-        agentList.stream().forEach(e -> e.getForeBidSet().add(e.getBidSet()));
+        agentList.stream().forEach(e -> e.getForeBidSet().add(e.getThisRoundBidSet()));
     }
 
     public static void updateReward(Point task, Agent agent) {
@@ -183,6 +189,7 @@ public class Algorithm {
         agent.setCost(agent.getCost(task) + agent.getCost());
         agent.setBid(res);
         agent.getBidSet().add(res);
+        agent.getThisRoundBidSet().add(res);
     }
 
     public static void payForAgent(Agent agent) {
@@ -193,18 +200,32 @@ public class Algorithm {
             Double temp = bidSet.get(i);
             sumBid += temp;
         }
-        double pExtra = agent.getBid() * (itsiCal(ITSI_TS) - itsiCal(ITSI_TS + ITSI_T));
+        double pExtra = sumBid * (itsiCal(ITSI_TS) - itsiCal(ITSI_TS + ITSI_T));
+        //System.out.println(" --------- "+agent.getBid()+"    "+itsiCal(ITSI_TS)+"    "+itsiCal(ITSI_TS + ITSI_T));
         double pCeil = Math.min(sumBid - agent.getCost(), sumBid * (1 - itsiCal(ITSI_T)));
         double p = pExtra + (pCeil - pExtra) * random.nextDouble();
+        log.info("id:[{}] extra:[{}] pCeil:[{}] p:[{}]", agent.getId(), pExtra, pCeil, p);
         if (random.nextBoolean()) {
             agent.setPay(sumBid + pExtra - p);
         } else {
             agent.setPay(sumBid + pExtra);
         }
+        getExtraEi(agent);
+    }
+
+    public static void getExtraEi(Agent agent) {
+        if (agent.getHd() > D_QUALITY) {
+            double culQ = agent.getHdTask().stream().mapToDouble(Double::doubleValue).sum();
+            double res = PSRD_E * agent.getHd() * Math.log(1 + culQ);
+            agent.setEi(res);
+            //log.info("agent's id [{}] get Ei [{}]",agent.getId(),res);
+        }
     }
 
     public static double itsiCal(double x) {
-        return Math.pow(Math.E, -ITSI_GAMMA * x);
+        double res = Math.pow(Math.E, -ITSI_GAMMA * x);
+        //System.out.println("res  = "+res);
+        return res;
     }
 
     public static void calR(List<Agent> agentList) {
@@ -249,6 +270,7 @@ public class Algorithm {
     public static void initAgentState(List<Agent> agentList) {
         //init bid
         agentList.stream().forEach(e -> e.setBid(0));
+        agentList.stream().forEach(e -> e.getThisRoundBidSet().clear());
     }
 
     public static void printTask(List<Point> taskList) {

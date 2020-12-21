@@ -8,7 +8,9 @@ import org.csu.kmeans.Point;
 
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 @Slf4j
 public class Main {
@@ -21,7 +23,7 @@ public class Main {
     // the number of workers.
     public static final int WORKER_NUM = 10;
     // budget
-    public static final double BUDGET = 4000;
+    public static final double BUDGET = 10000;
     // the upper limit of moving.
     public static final double MOVE_LIMIT = 1000;
 
@@ -52,6 +54,9 @@ public class Main {
         List<Point> points = copyTasks(taskList);
         List<Agent> agents = copyAgents(agentList);
 
+        //param setting
+        Algorithm.budget = BUDGET;
+        DetectiveAlgorithm.budget = BUDGET;
         for (; z <= Z_LIMIT; z++) {
             log.info("---------- The round of [{}] is start ----------", z);
             AlgorithmRun(taskList, agentList);
@@ -59,9 +64,19 @@ public class Main {
             DetectiveAlgorithmRun(points, agents);
             taskList = initTaskSet();
             points = copyTasks(taskList);
+            System.out.println("PSRD budget less " + Algorithm.budget);
+            System.out.println("DetectiveAlgorithm budget less " + DetectiveAlgorithm.budget);
         }
+
+        agentList.stream().forEach(e -> {
+            double sumPay = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+            log.info("agent id is [{}] get final payment [{}]", e.getId(), sumPay);
+        });
         agentList.stream().forEach(e -> Algorithm.payForAgent(e));
+
+        // print info
         printAgentInfo(agentList);
+        printDAAgent(agents);
     }
 
 
@@ -74,6 +89,7 @@ public class Main {
         Algorithm.selectTasks(taskList, agentList);
 
         Algorithm.refreshBidSet(agentList);
+
         //Algorithm.printAgent(agentList);
         //Algorithm.printTask(taskList);
         printInfo(taskList);
@@ -110,10 +126,12 @@ public class Main {
             float curY = random.nextFloat() * Y_SIZE;
             //System.out.println(curX+" "+curY);
             Point point = new Point(curX, curY);
-            double quality = random.nextDouble() * QUALITY_LIMIT + QUALITY_LIMIT * 0.3;
+            double quality = random.nextDouble() * QUALITY_LIMIT * 0.7 + QUALITY_LIMIT * 0.3;
             double val = quality;
             point.setQuality(quality);
             point.setValue(val);
+
+            point.setReward(val * (0.85 + random.nextDouble() / 10));
             point.setId(i);
             points.add(point);
         }
@@ -149,7 +167,6 @@ public class Main {
             float curY = random.nextFloat() * Y_SIZE;
             Agent agent = new Agent(curX, curY);
             //agent.setCost4r(random.nextDouble()*COST_LIMIT);
-            agent.setId(i);
             agent.setId(i);
             agent.setValI(random.nextDouble() / 2 + 1);
             agent.setQuaI(0.3 + random.nextDouble() / 2.0);
@@ -208,12 +225,52 @@ public class Main {
     }
 
     public static void printAgentInfo(List<Agent> agentList) {
+        double sumCompTask = agentList.stream()
+                .mapToDouble(e -> e.getCostSet().size())
+                .sum();
+        log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
         agentList.stream()
                 .forEach(e -> {
-                    double payment = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
-                    log.info("Agent's id [{}] has completed [{}], get payment [{}]",
-                            e.getId(), e.getBidSet().size(), payment);
+                    //double payment = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+                    double sumCost = e.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
+                    log.info("Agent's id [{}] has completed [{}], get payment [{}], cost is [{}],get Ei [{}]",
+                            e.getId(), e.getBidSet().size(), e.getPay(), sumCost, e.getEi());
                     //System.out.println(e.getBidSet());
                 });
+//        agentList.stream()
+//                .forEach(e -> {
+//                    System.out.println(e.getId() + " " + e.getEi());
+//                    //System.out.println(e.getHdTask());
+//                    //System.out.println(e.getCostSet());
+//                    //System.out.println(e.getBidSet());
+//                });
     }
+
+    public static void printDATask(List<Point> taskList) {
+        double sum = taskList.stream()
+                .filter(e -> e.getAgent() != null)
+                .mapToDouble(Point::getQuality)
+                .sum();
+        double avg = taskList.stream()
+                .filter(e -> e.getAgent() != null)
+                .mapToDouble(Point::getQuality)
+                .average().orElse(0D);
+        log.info("DA Task info");
+        log.info("The sum of tasks' quality is [{}]", sum);
+        log.info("The avg of tasks' quality is [{}]", avg);
+    }
+
+    public static void printDAAgent(List<Agent> agentList) {
+        double sumCompTask = agentList.stream()
+                .mapToDouble(e -> e.getCostSet().size())
+                .sum();
+        log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
+        agentList.stream().forEach(e -> {
+            double costSum = e.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
+
+            log.info("Agent's id [{}] has completed [{}], get payment [{}], cost is [{}]",
+                    e.getId(), e.getBidSet().size(), e.getPay(), costSum);
+        });
+    }
+
 }
