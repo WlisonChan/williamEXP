@@ -5,6 +5,7 @@ import org.csu.kmeans.Cluster;
 import org.csu.kmeans.Kmeans;
 import org.csu.kmeans.KmeansModel;
 import org.csu.kmeans.Point;
+import org.csu.util.WriterUtil;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,21 +15,22 @@ import java.util.Random;
 
 @Slf4j
 public class Main {
+
     // x size for map
     public static final int X_SIZE = 1000;
     // y size for map
     public static final int Y_SIZE = 1000;
     // the number of tasks.
-    public static final int TASK_NUM = 90;
+    public static final int TASK_NUM = 100;
     // the number of workers.
-    public static final int WORKER_NUM = 5;
+    public static final int WORKER_NUM = 20;
     // budget
-    public static final double BUDGET = 10000;
+    public static final double BUDGET = 5000;
     // the upper limit of moving.
     public static final double MOVE_LIMIT = 1000;
 
     // the upper of one task's quality
-    public static final double QUALITY_LIMIT = 110;
+    public static final double QUALITY_LIMIT = 100;
     // the upper of one task's value
     public static final double VALUE_LIMIT = 100;
     // the upper of one agent's cost
@@ -47,36 +49,49 @@ public class Main {
     public static int z = 1;
     public static final double Z_LIMIT = 6;
 
+    public static WriterUtil writerUtil;
+
+    static {
+        //writerUtil = new WriterUtil("quality");
+        writerUtil = new WriterUtil("platformUtility");
+    }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
-        List<Point> taskList = initTaskSet();
-        List<Agent> agentList = initAgents();
-        List<Point> points = copyTasks(taskList);
-        List<Agent> agents = copyAgents(agentList);
 
-        //param setting
-        Algorithm.budget = BUDGET;
-        DetectiveAlgorithm.budget = BUDGET;
-        for (; z <= Z_LIMIT; z++) {
-            log.info("---------- The round of [{}] is start ----------", z);
-            AlgorithmRun(taskList, agentList);
-            System.out.println("~~~~~~~~~~~~                   ~~~~~~~~~~~~~");
-            DetectiveAlgorithmRun(points, agents);
-            taskList = initTaskSet();
-            points = copyTasks(taskList);
-            System.out.println("PSRD budget less " + Algorithm.budget);
-            System.out.println("DetectiveAlgorithm budget less " + DetectiveAlgorithm.budget);
+        for (int i = 0; i < 100; i++) {
+            List<Point> taskList = initTaskSet();
+            List<Agent> agentList = initAgents();
+            List<Point> points = copyTasks(taskList);
+            List<Agent> agents = copyAgents(agentList);
+
+            z=1;
+            //param setting
+            Algorithm.budget = BUDGET;
+            DetectiveAlgorithm.budget = BUDGET;
+            for (; z <= Z_LIMIT; z++) {
+                //log.info("---------- The round of [{}] is start ----------", z);
+                AlgorithmRun(taskList, agentList);
+                //System.out.println("~~~~~~~~~~~~                   ~~~~~~~~~~~~~");
+                DetectiveAlgorithmRun(points, agents);
+                taskList = initTaskSet();
+                points = copyTasks(taskList);
+                System.out.println("PSRD budget less " + Algorithm.budget);
+                System.out.println("DetectiveAlgorithm budget less " + DetectiveAlgorithm.budget);
+            }
+
+            agentList.stream().forEach(e -> {
+                double sumPay = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+                //log.info("agent id is [{}] get final payment [{}]", e.getId(), sumPay);
+            });
+            agentList.stream().forEach(e -> Algorithm.payForAgent(e));
+
+            // print info
+            printAgentInfo(agentList);
+            printDAAgent(agents);
+
         }
-
-        agentList.stream().forEach(e -> {
-            double sumPay = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
-            log.info("agent id is [{}] get final payment [{}]", e.getId(), sumPay);
-        });
-        agentList.stream().forEach(e -> Algorithm.payForAgent(e));
-
-        // print info
-        printAgentInfo(agentList);
-        printDAAgent(agents);
+        // close resource
+        writerUtil.close();
     }
 
 
@@ -92,17 +107,17 @@ public class Main {
 
         //Algorithm.printAgent(agentList);
         //Algorithm.printTask(taskList);
-        printInfo(taskList);
-        System.out.println("-------- --------- -------- --------- ------------ ------- ------------ ---------- -------");
-        printQualityInfo(taskList);
+        //printInfo(taskList);
+        //System.out.println("-------- --------- -------- --------- ------------ ------- ------------ ---------- -------");
+        //printQualityInfo(taskList);
     }
 
     public static void DetectiveAlgorithmRun(List<Point> taskList, List<Agent> agentList) throws IOException {
 
         DetectiveAlgorithm.taskSelection(agentList, taskList);
 
-        printInfo(taskList);
-        printQualityInfo(taskList);
+        //printInfo(taskList);
+        //printQualityInfo(taskList);
     }
 
 
@@ -118,7 +133,7 @@ public class Main {
      */
     public static List<Point> kMeansForTasks() throws IOException {
         //数据输出路径
-        FileWriter writer = new FileWriter("src/main/resources/out.txt");
+        //FileWriter writer = new FileWriter("src/main/resources/out.txt");
         List<Point> points = new ArrayList<>(); // 任务点集
 
         Random random = new Random();
@@ -138,19 +153,19 @@ public class Main {
         }
         KmeansModel model = Kmeans.run(points, KMEANS_K, KMEANS_TYPE);
         // 将任务聚类
-        writer.write("====================   K is " + model.getK() + " ,  Object Funcion Value is " + model.getOfv() + " ,  calc_distance_type is " + model.getCalc_distance_type() + "   ====================\n");
-        int i = 0;
-        for (Cluster cluster : model.getClusters()) {
-            i++;
-            writer.write("====================   classification " + i + "   ====================\n");
-            for (Point point : cluster.getPoints()) {
-                writer.write(point.toString() + "\n");
-            }
-            writer.write("\n");
-            writer.write("centroid is " + cluster.getCentroid().toString());
-            writer.write("\n\n");
-        }
-        writer.close();
+//        writer.write("====================   K is " + model.getK() + " ,  Object Funcion Value is " + model.getOfv() + " ,  calc_distance_type is " + model.getCalc_distance_type() + "   ====================\n");
+//        int i = 0;
+//        for (Cluster cluster : model.getClusters()) {
+//            i++;
+//            writer.write("====================   classification " + i + "   ====================\n");
+//            for (Point point : cluster.getPoints()) {
+//                writer.write(point.toString() + "\n");
+//            }
+//            writer.write("\n");
+//            writer.write("centroid is " + cluster.getCentroid().toString());
+//            writer.write("\n\n");
+//        }
+//        writer.close();
         return points;
     }
 
@@ -221,23 +236,23 @@ public class Main {
                 .filter(e -> e.getAgent() != null)
                 .mapToDouble(Point::getQuality)
                 .sum();
-        log.info("The sum of tasks' quality is [{}]", sum);
-        log.info("The avg of tasks' quality is [{}]", avg);
+        //log.info("The sum of tasks' quality is [{}]", sum);
+        //log.info("The avg of tasks' quality is [{}]", avg);
     }
 
     public static void printAgentInfo(List<Agent> agentList) {
         double sumCompTask = agentList.stream()
                 .mapToDouble(e -> e.getCostSet().size())
                 .sum();
-        log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
-        agentList.stream()
+        //log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
+        /*agentList.stream()
                 .forEach(e -> {
                     //double payment = e.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
                     double sumCost = e.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
                     log.info("Agent's id [{}] has completed [{}], get payment [{}], cost is [{}],get Ei [{}]",
                             e.getId(), e.getBidSet().size(), e.getPay(), sumCost, e.getEi());
                     //System.out.println(e.getBidSet());
-                });
+                });*/
 
         double sum = 0;
         double num = 0;
@@ -250,7 +265,33 @@ public class Main {
                 num++;
             }
         }
-        log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
+
+        //writerUtil.outputData("MY\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
+
+/*        double platform = 0;
+
+        // 平台效用 输出
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskSet = agent.getTaskSet();
+            double taskSumValue = taskSet.stream().mapToDouble(Point::getValue).sum();
+            double bidSum = agent.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+            platform+=taskSumValue - bidSum;
+        }
+
+        writerUtil.outputData("MY\t"+platform+"\t\t");*/
+
+        double sw = 0;
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskSet = agent.getTaskSet();
+            double sumTaskVal = taskSet.stream().mapToDouble(Point::getValue).sum();
+            double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
+            sw+=sumTaskVal-sumCost;
+        }
+        writerUtil.outputData("MY\t"+sw+"\t\t");
+
+        //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
 //        agentList.stream()
 //                .forEach(e -> {
 //                    System.out.println(e.getId() + " " + e.getEi());
@@ -275,7 +316,7 @@ public class Main {
     }
 
     public static void printDAAgent(List<Agent> agentList) {
-        double sumCompTask = agentList.stream()
+       /* double sumCompTask = agentList.stream()
                 .mapToDouble(e -> e.getCostSet().size())
                 .sum();
         log.info("The total sum of tasks which have completed is [{}]", sumCompTask);
@@ -285,7 +326,7 @@ public class Main {
             log.info("Agent's id [{}] has completed [{}], get payment [{}], cost is [{}]",
                     e.getId(), e.getBidSet().size(), e.getPay(), costSum);
         });
-
+*/
         double sum = 0;
         double num = 0;
         for (int i = 0; i < agentList.size(); i++) {
@@ -297,7 +338,32 @@ public class Main {
                 num++;
             }
         }
-        log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
+        //writerUtil.outputData("DA\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
+
+/*        double platform = 0;
+
+        // 平台效用 输出
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskSet = agent.getTaskDASet();
+            double taskSumValue = taskSet.stream().mapToDouble(Point::getValue).sum();
+            double bidSum = agent.getBidSet().stream().mapToDouble(Double::doubleValue).sum();
+            platform+=taskSumValue - bidSum;
+        }
+
+        writerUtil.outputData("DA\t"+platform+"\t\t");*/
+
+        double sw = 0;
+        for (int i = 0; i < agentList.size(); i++) {
+            Agent agent = agentList.get(i);
+            List<Point> taskSet = agent.getTaskDASet();
+            double sumTaskVal = taskSet.stream().mapToDouble(Point::getValue).sum();
+            double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
+            sw+=sumTaskVal-sumCost;
+        }
+        writerUtil.outputData("DA\t"+sw+"\t\t");
+
+        //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
     }
 
 }
