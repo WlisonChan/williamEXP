@@ -25,7 +25,8 @@ public class Main {
     // the number of workers.
     public static final int WORKER_NUM = 20;
     // budget
-    public static final double BUDGET = 5000;
+    public static final double BUDGET = 1000;
+    public static final double GAMMA = 1.00;
     // the upper limit of moving.
     public static final double MOVE_LIMIT = 1000;
 
@@ -37,8 +38,8 @@ public class Main {
     public static final double COST_LIMIT = 5;
 
     // PSRD's parameter
-    public static final double K_I = 2;
     public static final double L_I = 3;
+    public static final double K_I = 2;
 
     // kmeans - k
     public static final int KMEANS_K = 5;
@@ -53,7 +54,7 @@ public class Main {
 
     static {
         //writerUtil = new WriterUtil("quality");
-        writerUtil = new WriterUtil("platformUtility");
+        writerUtil = new WriterUtil("platformUtility-"+BUDGET+"-"+GAMMA);
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -75,8 +76,8 @@ public class Main {
                 DetectiveAlgorithmRun(points, agents);
                 taskList = initTaskSet();
                 points = copyTasks(taskList);
-                System.out.println("PSRD budget less " + Algorithm.budget);
-                System.out.println("DetectiveAlgorithm budget less " + DetectiveAlgorithm.budget);
+                //System.out.println("PSRD budget less " + Algorithm.budget);
+                //System.out.println("DetectiveAlgorithm budget less " + DetectiveAlgorithm.budget);
             }
 
             agentList.stream().forEach(e -> {
@@ -103,7 +104,7 @@ public class Main {
 
         Algorithm.selectTasks(taskList, agentList);
 
-        Algorithm.refreshBidSet(agentList);
+        //Algorithm.refreshBidSet(agentList);
 
         //Algorithm.printAgent(agentList);
         //Algorithm.printTask(taskList);
@@ -188,7 +189,8 @@ public class Main {
             agent.setQuaI(0.3 + random.nextDouble() / 2.0);
             agent.setKi(random.nextDouble() * K_I);
             agent.setLi(random.nextDouble() * L_I);
-            agent.setGamma(0.1 + random.nextDouble() / 10.0);
+            //agent.setGamma(0.85 + random.nextDouble() / 10.0);
+            agent.setGamma(GAMMA);
 
             agents.add(agent);
         }
@@ -254,7 +256,7 @@ public class Main {
                     //System.out.println(e.getBidSet());
                 });*/
 
-        double sum = 0;
+/*        double sum = 0;
         double num = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
@@ -266,9 +268,9 @@ public class Main {
             }
         }
 
-        //writerUtil.outputData("MY\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
+        writerUtil.outputData("MY\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);*/
 
-/*        double platform = 0;
+        double platform = 0;
 
         // 平台效用 输出
         for (int i = 0; i < agentList.size(); i++) {
@@ -279,9 +281,9 @@ public class Main {
             platform+=taskSumValue - bidSum;
         }
 
-        writerUtil.outputData("MY\t"+platform+"\t\t");*/
+        writerUtil.outputData("MY\t"+platform+"\t\t");
 
-        double sw = 0;
+/*        double sw = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
             List<Point> taskSet = agent.getTaskSet();
@@ -289,7 +291,7 @@ public class Main {
             double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
             sw+=sumTaskVal-sumCost;
         }
-        writerUtil.outputData("MY\t"+sw+"\t\t");
+        writerUtil.outputData("MY\t"+sw+"\t\t");*/
 
         //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
 //        agentList.stream()
@@ -327,7 +329,8 @@ public class Main {
                     e.getId(), e.getBidSet().size(), e.getPay(), costSum);
         });
 */
-        double sum = 0;
+
+        /*double sum = 0;
         double num = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
@@ -338,9 +341,9 @@ public class Main {
                 num++;
             }
         }
-        //writerUtil.outputData("DA\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
+        writerUtil.outputData("DA\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);*/
 
-/*        double platform = 0;
+        double platform = 0;
 
         // 平台效用 输出
         for (int i = 0; i < agentList.size(); i++) {
@@ -351,9 +354,9 @@ public class Main {
             platform+=taskSumValue - bidSum;
         }
 
-        writerUtil.outputData("DA\t"+platform+"\t\t");*/
+        writerUtil.outputData("DA\t"+platform+"\t\t");
 
-        double sw = 0;
+/*        double sw = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
             List<Point> taskSet = agent.getTaskDASet();
@@ -361,7 +364,7 @@ public class Main {
             double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
             sw+=sumTaskVal-sumCost;
         }
-        writerUtil.outputData("DA\t"+sw+"\t\t");
+        writerUtil.outputData("DA\t"+sw+"\t\t");*/
 
         //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
     }

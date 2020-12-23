@@ -104,4 +104,8 @@ public class Agent implements Serializable{
         return d;
     }
 
+    public boolean judgeRoundSet(){
+        return this.getThisRoundBidSet().size() == 0 ? false: true;
+    }
+
 }

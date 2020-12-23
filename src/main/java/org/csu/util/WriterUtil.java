@@ -14,7 +14,7 @@ public class WriterUtil {
 
     public WriterUtil(String filename){
         this.filename = filename;
-        outPutUrl = outPutUrl+filename;
+        outPutUrl = outPutUrl+filename+".txt";
         try {
             writer = new FileWriter(outPutUrl);
         } catch (IOException e) {
