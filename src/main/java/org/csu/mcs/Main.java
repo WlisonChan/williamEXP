@@ -23,10 +23,10 @@ public class Main {
     // the number of tasks.
     public static final int TASK_NUM = 100;
     // the number of workers.
-    public static final int WORKER_NUM = 20;
+    public static final int WORKER_NUM = 5;
     // budget
-    public static final double BUDGET = 1000;
-    public static final double GAMMA = 1.00;
+    public static final double BUDGET = 3000;
+    public static final double GAMMA = 0.3;
     // the upper limit of moving.
     public static final double MOVE_LIMIT = 1000;
 
@@ -54,7 +54,8 @@ public class Main {
 
     static {
         //writerUtil = new WriterUtil("quality");
-        writerUtil = new WriterUtil("platformUtility-"+BUDGET+"-"+GAMMA);
+        //writerUtil = new WriterUtil("platformUtility-"+BUDGET+"-"+GAMMA);
+        writerUtil = new WriterUtil("social-welfare-"+BUDGET+"-"+WORKER_NUM+"-"+GAMMA);
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
@@ -256,7 +257,7 @@ public class Main {
                     //System.out.println(e.getBidSet());
                 });*/
 
-/*        double sum = 0;
+        double sum = 0;
         double num = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
@@ -268,9 +269,9 @@ public class Main {
             }
         }
 
-        writerUtil.outputData("MY\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);*/
+        //writerUtil.outputData("MY\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
 
-        double platform = 0;
+/*        double platform = 0;
 
         // 平台效用 输出
         for (int i = 0; i < agentList.size(); i++) {
@@ -281,9 +282,9 @@ public class Main {
             platform+=taskSumValue - bidSum;
         }
 
-        writerUtil.outputData("MY\t"+platform+"\t\t");
+        writerUtil.outputData("MY\t"+platform+"\t");*/
 
-/*        double sw = 0;
+        double sw = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
             List<Point> taskSet = agent.getTaskSet();
@@ -291,7 +292,8 @@ public class Main {
             double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
             sw+=sumTaskVal-sumCost;
         }
-        writerUtil.outputData("MY\t"+sw+"\t\t");*/
+        //System.out.println("MY "+num);
+        writerUtil.outputData("MY\t"+sw+"\t"+num);
 
         //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
 //        agentList.stream()
@@ -330,7 +332,7 @@ public class Main {
         });
 */
 
-        /*double sum = 0;
+        double sum = 0;
         double num = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
@@ -341,9 +343,10 @@ public class Main {
                 num++;
             }
         }
-        writerUtil.outputData("DA\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);*/
+        //System.out.println("DA "+num);
+        //writerUtil.outputData("DA\t"+sum+"\t\t"+(sum/num)+"\t\t"+num);
 
-        double platform = 0;
+        /*double platform = 0;
 
         // 平台效用 输出
         for (int i = 0; i < agentList.size(); i++) {
@@ -354,9 +357,9 @@ public class Main {
             platform+=taskSumValue - bidSum;
         }
 
-        writerUtil.outputData("DA\t"+platform+"\t\t");
+        writerUtil.outputData("DA\t"+platform+"\t");*/
 
-/*        double sw = 0;
+        double sw = 0;
         for (int i = 0; i < agentList.size(); i++) {
             Agent agent = agentList.get(i);
             List<Point> taskSet = agent.getTaskDASet();
@@ -364,7 +367,7 @@ public class Main {
             double sumCost = agent.getCostSet().stream().mapToDouble(Double::doubleValue).sum();
             sw+=sumTaskVal-sumCost;
         }
-        writerUtil.outputData("DA\t"+sw+"\t\t");*/
+        writerUtil.outputData("DA\t"+sw+"\t"+num);
 
         //log.info("The sum quality of tasks is [{}],avg is [{}]",sum,sum/num);
     }
