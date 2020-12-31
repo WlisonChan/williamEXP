@@ -23,15 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04f919b5-f368-46e5-9bd1-c09a694730fc" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Agent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Agent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/DetectiveAlgorithm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/DetectiveAlgorithm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/out.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/Agent.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/Agent.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/DetectiveAlgorithm.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/DetectiveAlgorithm.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/org/csu/mcs/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/csu/mcs/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/out.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/out.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,7 +51,9 @@
     </option>
   </component>
   <component name="ProjectId" id="1ljTinekUguTUc8dtwkNaXTetIh" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="showLibraryContents" value="true" />
   </component>
@@ -82,7 +78,7 @@
       <recent name="C:\Users\lenovo\IdeaProjects\williamEXP\src\main\java\org\csu" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.Test.testFi">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="org.csu.mcs.Main" />
       <module name="williamEXP" />
@@ -107,8 +103,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="Test.testFi" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="williamEXP" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.csu.mcs.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.csu.mcs" />
+      <option name="MAIN_CLASS_NAME" value="org.csu.mcs.Test" />
+      <option name="METHOD_NAME" value="testFi" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.Test.testFi" />
         <item itemvalue="Application.Main" />
       </list>
     </recent_temporary>
@@ -133,7 +146,9 @@
       <workItem from="1608302271676" duration="6505000" />
       <workItem from="1608359715728" duration="5909000" />
       <workItem from="1608512876420" duration="13787000" />
-      <workItem from="1608540001834" duration="4931000" />
+      <workItem from="1608540001834" duration="5220000" />
+      <workItem from="1609256588161" duration="5000" />
+      <workItem from="1609342208766" duration="3685000" />
     </task>
     <servers />
   </component>
@@ -170,26 +185,26 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="663" y="240" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1608260454914" />
-    <state width="1398" height="561" key="GridCell.Tab.0.bottom" timestamp="1608552198629">
+    <state width="1398" height="289" key="GridCell.Tab.0.bottom" timestamp="1609346617263">
       <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state width="1417" height="629" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
-    <state width="1398" height="561" key="GridCell.Tab.0.bottom/0.25.1440.817@0.25.1440.817" timestamp="1608552198629" />
-    <state width="1398" height="561" key="GridCell.Tab.0.center" timestamp="1608552198628">
+    <state width="1398" height="289" key="GridCell.Tab.0.bottom/0.25.1440.817@0.25.1440.817" timestamp="1609346617263" />
+    <state width="1398" height="289" key="GridCell.Tab.0.center" timestamp="1609346617263">
       <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state width="1417" height="629" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
-    <state width="1398" height="561" key="GridCell.Tab.0.center/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
-    <state width="1398" height="561" key="GridCell.Tab.0.left" timestamp="1608552198628">
+    <state width="1398" height="289" key="GridCell.Tab.0.center/0.25.1440.817@0.25.1440.817" timestamp="1609346617263" />
+    <state width="1398" height="289" key="GridCell.Tab.0.left" timestamp="1609346617262">
       <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state width="1417" height="629" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050538" />
-    <state width="1398" height="561" key="GridCell.Tab.0.left/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
-    <state width="1398" height="561" key="GridCell.Tab.0.right" timestamp="1608552198628">
+    <state width="1398" height="289" key="GridCell.Tab.0.left/0.25.1440.817@0.25.1440.817" timestamp="1609346617262" />
+    <state width="1398" height="289" key="GridCell.Tab.0.right" timestamp="1609346617263">
       <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state width="1417" height="629" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608297050539" />
-    <state width="1398" height="561" key="GridCell.Tab.0.right/0.25.1440.817@0.25.1440.817" timestamp="1608552198628" />
+    <state width="1398" height="289" key="GridCell.Tab.0.right/0.25.1440.817@0.25.1440.817" timestamp="1609346617263" />
     <state width="1417" height="590" key="GridCell.Tab.1.bottom" timestamp="1608280636712">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -206,11 +221,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1417" height="590" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608280636712" />
-    <state x="288" y="25" width="1024" height="817" key="SettingsEditor" timestamp="1608302402974">
+    <state x="288" y="25" width="1024" height="817" key="SettingsEditor" timestamp="1609342895247">
       <screen x="0" y="25" width="1440" height="817" />
     </state>
     <state x="384" y="130" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1608260458164" />
-    <state x="288" y="25" width="1024" height="817" key="SettingsEditor/0.25.1440.817@0.25.1440.817" timestamp="1608302402974" />
+    <state x="288" y="25" width="1024" height="817" key="SettingsEditor/0.25.1440.817@0.25.1440.817" timestamp="1609342895247" />
     <state x="680" y="268" key="run.anything.popup" timestamp="1608211571834">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
