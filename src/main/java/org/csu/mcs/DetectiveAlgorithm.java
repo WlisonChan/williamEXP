@@ -126,13 +126,13 @@ public class DetectiveAlgorithm {
             budget-=task.getReward();
         }
         agent.setPay(agent.getPay()+reward);
-/*        if (taskSet.size() > 1) {
+        if (taskSet.size() > 1) {
             log.info("The tasks' id are [{}] and [{}] which is completed by agent [{}]",
                     taskSet.get(0).getId(), taskSet.get(1).getId(), agent.getId());
         } else {
             log.info("The task id is [{}] which is completed by agent [{}]",
                     taskSet.get(0).getId(), agent.getId());
-        }*/
+        }
     }
 
     public static void updateLocation(Agent agent) {

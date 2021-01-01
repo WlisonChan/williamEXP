@@ -79,9 +79,10 @@ public class Algorithm {
                         continue;
                     }
                     double fi = calTaskFi(agent, point);
-                    //System.out.println(point.getId()+" "+fi);
-                    if (fi > maxFi && point.getValue() - agent.getCost(point) > 0) {
-                        //System.out.print( " r- "+agent.getId()+" "+point.getId()+" ");
+                    //System.out.println(agent.getId()+" "+fi);
+                    if (fi > maxFi && point.getValue() - agent.getCost(point) > 0 &&
+                            agent.getBid() < point.getValue() && budget - agent.getBid() >=0) {
+                        //System.out.println( " r- "+agent.getId()+" "+point.getId()+" ");
                         maxFi = fi;
                         cur = point;
                     }
@@ -89,6 +90,8 @@ public class Algorithm {
                 if (cur != null) {
                     cur.getAgentList().add(agent);
                     double cost = agent.getCost(cur);
+
+                    //System.out.println( " f- "+agent.getId()+" "+cur.getId()+" ");
                     Random random = new Random();
 
                     double bid = (1 + random.nextDouble() * 0.1) * cost;
@@ -147,7 +150,9 @@ public class Algorithm {
             double cost = Double.MAX_VALUE;
             for (int j = 0; j < agentList.size(); j++) {
                 Agent agent = agentList.get(j);
+                //System.out.println(agent.getId()+" +++ "+(agent.getCost(task))+" "+ (budget - agent.getBid()) + " "+(agent.getBid() < task.getValue()));
                 if (agent.getCost(task) < cost && agent.getBid() < task.getValue() && budget - agent.getBid() >=0) {
+                    //System.out.println(agent.getId()+" --------");
                     cur = j;
                     cost = agent.getCost(task);
                 }
@@ -165,7 +170,7 @@ public class Algorithm {
                 }
                 updateLocation(winner, task);
 
-                //log.info("The task id is [{}] which is completed by agent [{}]", task.getId(), winner.getId());
+                log.info("The task id is [{}] which is completed by agent [{}]", task.getId(), winner.getId());
                 flag = true;
             }
         }
