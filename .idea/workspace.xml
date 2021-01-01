@@ -23,9 +23,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="04f919b5-f368-46e5-9bd1-c09a694730fc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/csu/mcs/Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,17 +90,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="Test.testFi" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="williamEXP" />
       <extension name="coverage">
@@ -149,6 +136,7 @@
       <workItem from="1608540001834" duration="5220000" />
       <workItem from="1609256588161" duration="5000" />
       <workItem from="1609342208766" duration="3685000" />
+      <workItem from="1609409851677" duration="183000" />
     </task>
     <servers />
   </component>
