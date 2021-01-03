@@ -139,7 +139,7 @@ public class Point implements Serializable {
 
     @Override
     public String toString() {
-        return x + " " + y;
+        return getValue() + " " + getQuality();
     }
 
     /**
@@ -162,6 +162,9 @@ public class Point implements Serializable {
             case 3:
                 result = calcEuclidianDistance(centroid);
                 break;
+            case 4:
+                result = calcL1Distance4PV(centroid);
+                break;
         }
         return result;
     }
@@ -175,6 +178,16 @@ public class Point implements Serializable {
     private Double calcL1Distance(Point centroid) {
         double res = 0;
         res = Math.abs(getX() - centroid.getX()) + Math.abs(getY() - centroid.getY());
+        return res / (double) 2;
+    }
+
+        /*
+            计算距离公式
+     */
+
+    private Double calcL1Distance4PV(Point centroid) {
+        double res = 0;
+        res = Math.abs(getValue() - centroid.getValue()) + Math.abs(getQuality() - centroid.getQuality());
         return res / (double) 2;
     }
 

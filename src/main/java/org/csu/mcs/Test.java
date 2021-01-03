@@ -36,7 +36,7 @@ public class Test {
                     (Math.pow(VAL_I, V_j - AVG_VAL)),Math.pow(QUA_I, Math.abs(Q_j - AVG_QUA)));*/
                 System.out.printf("%.3f\t%.3f\t", fi,fi2);
                 System.out.println();
-            }
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -51,6 +51,27 @@ public class Test {
             }
             System.out.println();
         }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testPV(){
+        for (int i = 30; i <= 100; i++) {
+            System.out.printf("%d\t",i);
+        }
+        System.out.println();
+        for (double  V_j = 30; V_j <= 100; V_j++) {
+
+            for (double Q_j = 30; Q_j <= 100; Q_j++) {
+
+                double val = A * (Math.pow(VAL_I, V_j - AVG_VAL) + C_K) * (V_j);
+                double qua = B * (Math.pow(QUA_I, Math.abs(Q_j - AVG_QUA)) + C_L) * (Q_j);
+                double fi = qua + val;
+                System.out.printf("%.3f\t", fi);
+            }
+                System.out.println();
+
+        }
+
     }
 
 }
