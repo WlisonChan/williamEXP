@@ -55,7 +55,7 @@ public class Kmeans {
             min_X = min_X > point.getX() ? point.getX() : min_X;
             min_Y = min_Y > point.getY() ? point.getY() : min_Y;
         }
-        System.out.println("min_X" + min_X + ",max_X:" + max_X + ",min_Y" + min_Y + ",max_Y" + max_Y);
+        // System.out.println("min_X" + min_X + ",max_X:" + max_X + ",min_Y" + min_Y + ",max_Y" + max_Y);
 
         // 在范围内随机初始化k个质心点
         Random random = new Random();

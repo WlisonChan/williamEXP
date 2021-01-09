@@ -4,14 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.csu.kmeans.Point;
 
 import java.util.List;
+import java.util.Random;
 
 @Slf4j
-public class DetectiveAlgorithm {
+public class ITSIAlgorithm {
 
     //parameter setting
     public static double budget = 0;
     // cost coefficient - ai
-    public static final double COST_COEFFICIENT = 0.5;
+    public static final double COST_COEFFICIENT = 1.0;
     // distance coefficient - bi
     public static final double DISTANCE_COEFFICIENT = 1.0;
 
@@ -60,20 +61,6 @@ public class DetectiveAlgorithm {
                     agent.setProfit(maxProfit);
                 }
             }
-           /* for (int i = 0; i < agentList.size(); i++) {
-                Agent agent = agentList.get(i);
-                System.out.println("aid: "+agent.getId());
-                for (int j = 0; j < agent.getTaskSet().size(); j++) {
-                    System.out.println(agent.getTaskSet().get(j).getId());
-                }
-            }
-            for (int i = 0; i < taskList.size(); i++) {
-                Point task = taskList.get(i);
-                System.out.println("task id : "+ task.getId());
-                for (int j = 0; j < task.getAgentList().size(); j++) {
-                    System.out.println(task.getAgentList().get(j).getId());
-                }
-            }*/
             flag = selectWinner(taskList);
             if (!flag) {
                 break;
@@ -114,18 +101,25 @@ public class DetectiveAlgorithm {
         //System.out.println(taskSet.size());
         //taskSet.stream().forEach(e -> e.setAgent(agent));
         double reward = 0;
+        double cost = 0;
         for (int i = 0; i < taskSet.size(); i++) {
             Point task = taskSet.get(i);
             task.setAgent(agent);
             reward+=task.getReward();
-            agent.getBidSet().add(task.getReward());
-            agent.getCostSet().add(agent.getCost(task));
+            //agent.getBidSet().add(task.getReward());
+            cost += agent.getCost(task);
             agent.getTaskDASet().add(task);
+
+            //agent.getThisRoundBidSet().add(task.getReward());
             //System.out.println(agent.getTaskDASet());
 
-            budget-=task.getReward();
+            //budget-=task.getReward();
         }
-        agent.setPay(agent.getPay()+reward);
+        double pay = calReward(agent, reward);
+        agent.getBidSet().add(pay);
+        agent.getCostSet().add(cost);
+        budget-=pay;
+        agent.setPay(agent.getPay()+pay);
         if (taskSet.size() > 1) {
             log.info("The tasks' id are [{}] and [{}] which is completed by agent [{}]",
                     taskSet.get(0).getId(), taskSet.get(1).getId(), agent.getId());
@@ -133,6 +127,23 @@ public class DetectiveAlgorithm {
             log.info("The task id is [{}] which is completed by agent [{}]",
                     taskSet.get(0).getId(), agent.getId());
         }
+    }
+
+    public static double calReward(Agent agent,double reward){
+        double pExtra = reward * (itsiCal(Algorithm.ITSI_TS) - itsiCal(Algorithm.ITSI_TS + Algorithm.ITSI_T));
+        if (agent.isMotivate()) {
+            Random random = new Random();
+            double pCeil = Math.min(reward - agent.getCost(), reward * (1 - itsiCal(Algorithm.ITSI_T)));
+            double p = pExtra + (pCeil - pExtra) * random.nextDouble();
+            return reward + pExtra - p;
+        }
+        return reward + pExtra;
+    }
+
+    public static double itsiCal(double x) {
+        double res = Math.pow(Math.E, - Algorithm.ITSI_GAMMA * x);
+        //System.out.println("res  = "+res);
+        return res;
     }
 
     public static void updateLocation(Agent agent) {
@@ -179,4 +190,8 @@ public class DetectiveAlgorithm {
         taskList.stream().forEach(e->e.getAgentList().clear());
     }
 
+    public static void initAgentBidSet(List<Agent> agentList){
+        agentList.stream()
+                .forEach(e->e.getThisRoundBidSet().clear());
+    }
 }

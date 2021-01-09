@@ -30,6 +30,8 @@ public class Agent implements Serializable{
     private double cost;
     // Accumulated income
     private double pay;
+    // ITSI judge payment like;
+    private boolean motivate;
 
     // complete task set
     private List<Point> taskSet;
@@ -102,6 +104,10 @@ public class Agent implements Serializable{
         double d = Math.pow(this.x - point.getX(), 2) + Math.pow(this.y - point.getY(), 2);
         d = Math.sqrt(d);
         return d;
+    }
+
+    public boolean judgeRoundSet(){
+        return this.getThisRoundBidSet().size() == 0 ? false: true;
     }
 
 }

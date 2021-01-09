@@ -2,6 +2,7 @@ package org.csu.mcs;
 
 import lombok.extern.slf4j.Slf4j;
 import org.csu.kmeans.Point;
+import sun.management.resources.agent;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,8 +18,9 @@ public class Algorithm {
     public static final double VAL_I = 1.03;
     public static final double QUL_I = 0.81;
     public static final double D_QUALITY = Main.Z_LIMIT * 2;
+    //public static final double D_QUALITY = 24;
 
-    public static final double PSRD_A = 0.3;
+    public static final double PSRD_A = 0.1;
     public static final double PSRD_B = 1 - PSRD_A;
     public static final double PSRD_E = 0.05;
 
@@ -50,12 +52,12 @@ public class Algorithm {
     public static void calAvgQuality(List<Point> taskList) {
         avgQuality = taskList.stream().mapToDouble(Point::getQuality).average().orElse(0D);
         hAvgQ.add(avgQuality);
-        log.info("The avgQuality's value is [{}]", avgQuality);
+        //log.info("The avgQuality's value is [{}]", avgQuality);
     }
 
     public static void calAvgValue(List<Point> taskList) {
         avgValue = taskList.stream().mapToDouble(Point::getValue).average().orElse(0D);
-        log.info("The avgValue's value is [{}]", avgValue);
+        //log.info("The avgValue's value is [{}]", avgValue);
     }
 
     public static void selectTasks(List<Point> taskList, List<Agent> agentList) throws IOException, ClassNotFoundException {
@@ -77,9 +79,10 @@ public class Algorithm {
                         continue;
                     }
                     double fi = calTaskFi(agent, point);
-                    //System.out.println(point.getId()+" "+fi);
-                    if (fi > maxFi && point.getValue() - agent.getCost(point) > 0) {
-                        //System.out.print( " r- "+agent.getId()+" "+point.getId()+" ");
+                    //System.out.println(agent.getId()+" "+fi);
+                    if (fi > maxFi && point.getValue() - agent.getCost(point) > 0 &&
+                            agent.getBid() < point.getValue() && budget - agent.getBid() >=0) {
+                        //System.out.println( " r- "+agent.getId()+" "+point.getId()+" ");
                         maxFi = fi;
                         cur = point;
                     }
@@ -87,15 +90,19 @@ public class Algorithm {
                 if (cur != null) {
                     cur.getAgentList().add(agent);
                     double cost = agent.getCost(cur);
+
+                    //System.out.println( " f- "+agent.getId()+" "+cur.getId()+" ");
                     Random random = new Random();
 
                     double bid = (1 + random.nextDouble() * 0.1) * cost;
-                    if (Main.z == 1 && agent.getForeBidSet().size() != 0) {
+                    if (Main.z != 1 && agent.getForeBidSet().size() != 0) {
                         double bSum = 0;
                         List<List<Double>> bidSet = agent.getForeBidSet();
                         for (int j = bidSet.size() - 1; j >= 0; j--) {
+                            //System.out.println(bidSet.get(j));
                             double curSum = bidSet.get(j).stream().mapToDouble(Double::doubleValue).sum();
-                            bSum += Math.pow(agent.getGamma(), bidSet.size() - j) * curSum;
+                            bSum += Math.pow(agent.getGamma(), bidSet.size() -j ) * curSum;
+                            //System.out.println(curSum+" "+(bidSet.size() -j)+" "+agent.getGamma());
                         }
                         /*
                         for (int j = 0; j < bidSet.size(); j++) {
@@ -124,6 +131,7 @@ public class Algorithm {
             //printTask(taskList);
             calR(agentList);
             flag = selectWinner(taskList);
+            refreshBidSet(agentList);
             if (!flag) {
                 break;
             }
@@ -142,7 +150,9 @@ public class Algorithm {
             double cost = Double.MAX_VALUE;
             for (int j = 0; j < agentList.size(); j++) {
                 Agent agent = agentList.get(j);
+                //System.out.println(agent.getId()+" +++ "+(agent.getCost(task))+" "+ (budget - agent.getBid()) + " "+(agent.getBid() < task.getValue()));
                 if (agent.getCost(task) < cost && agent.getBid() < task.getValue() && budget - agent.getBid() >=0) {
+                    //System.out.println(agent.getId()+" --------");
                     cur = j;
                     cost = agent.getCost(task);
                 }
@@ -168,7 +178,16 @@ public class Algorithm {
     }
 
     public static void refreshBidSet(List<Agent> agentList) {
-        agentList.stream().forEach(e -> e.getForeBidSet().add(e.getThisRoundBidSet()));
+        agentList.stream().filter(Agent::judgeRoundSet).forEach(e ->
+        {
+            List<Double> temp = new ArrayList<>();
+            for (int i = 0; i < e.getThisRoundBidSet().size(); i++) {
+                temp.add(e.getThisRoundBidSet().get(i));
+            }
+            e.getForeBidSet().add(temp);
+            //System.out.println(e.getThisRoundBidSet());
+        }
+        );
     }
 
     public static void updateReward(Point task, Agent agent) {
@@ -178,8 +197,10 @@ public class Algorithm {
         if (agent.getBid() > r) {
             double cost = agent.getCost(task);
             double sigma = Math.max(0.8, cost / agent.getBid());
+            //System.out.println("sigama"+sigma);
             double bSum = agent.getBid() - cost;
             res = sigma * (cost + bSum) + 2 * (1 - sigma) * bSum * Math.atan(agent.getBid() - r) / Math.PI;
+            //System.out.println(2 * (1 - sigma) * bSum * Math.atan(agent.getBid() - r) / Math.PI);
             //System.out.println("res1 " + res);
         } else {
             res = agent.getBid();
@@ -187,6 +208,8 @@ public class Algorithm {
         }
         //System.out.println("res      ====================================================================================" + res);
         agent.setCost(agent.getCost(task) + agent.getCost());
+
+        //System.out.println("     --- - - - - - -- - - "+agent.getBid()+"    "+res);
         agent.setBid(res);
         agent.getBidSet().add(res);
         agent.getThisRoundBidSet().add(res);
@@ -204,7 +227,7 @@ public class Algorithm {
         //System.out.println(" --------- "+agent.getBid()+"    "+itsiCal(ITSI_TS)+"    "+itsiCal(ITSI_TS + ITSI_T));
         double pCeil = Math.min(sumBid - agent.getCost(), sumBid * (1 - itsiCal(ITSI_T)));
         double p = pExtra + (pCeil - pExtra) * random.nextDouble();
-        log.info("id:[{}] extra:[{}] pCeil:[{}] p:[{}]", agent.getId(), pExtra, pCeil, p);
+        //log.info("id:[{}] extra:[{}] pCeil:[{}] p:[{}]", agent.getId(), pExtra, pCeil, p);
         if (random.nextBoolean()) {
             agent.setPay(sumBid + pExtra - p);
         } else {
@@ -259,11 +282,12 @@ public class Algorithm {
             v += e * agent.getHd() / D_QUALITY;
             //System.out.printf(" refresh v:%.3f ",v);
         }
-        double res = PSRD_A * (Math.pow(agent.getValI(), task.getValue() - avgValue) /* + agent.getKi()*/) * v
-                + PSRD_B * (Math.pow(agent.getQuaI(), Math.abs(task.getQuality() - avgQuality)) /* + agent.getLi() */) * task.getQuality();
-        //System.out.printf("res %.3f %.3f\n",
-        // (Math.pow(VAL_I,task.getReward()-avgValue) * v),(Math.pow(QUL_I,Math.abs(task.getQuality()-avgQuality)) * task.getQuality()));
-        //System.out.println();
+        double res = PSRD_A * (Math.pow(agent.getValI(), task.getValue() - avgValue)  + agent.getKi()) * v
+                + PSRD_B * (Math.pow(agent.getQuaI(), Math.abs(task.getQuality() - avgQuality))  + agent.getLi() ) * task.getQuality();
+        /*System.out.println(task.getValue()+" "+avgValue+" "+task.getQuality()+" "+avgQuality);
+        System.out.printf("res %.3f %.3f\n",
+         (Math.pow(VAL_I,task.getValue()-avgValue) * v),(Math.pow(QUL_I,Math.abs(task.getQuality()-avgQuality)) * task.getQuality()));
+        System.out.println();*/
         return res;
     }
 
