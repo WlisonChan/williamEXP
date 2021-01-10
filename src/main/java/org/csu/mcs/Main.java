@@ -23,7 +23,7 @@ public class Main {
     // the number of tasks.
     public static final int TASK_NUM = 100;
     // the number of workers.
-    public static final int WORKER_NUM = 50;
+    public static final int WORKER_NUM = 100;
     // budget
     public static final double BUDGET = 10000;
     public static final double GAMMA = 0.3;
@@ -48,14 +48,14 @@ public class Main {
 
     // the round of mcs
     public static int z = 1;
-    public static final double Z_LIMIT = 6;
+    public static final double Z_LIMIT = 3;
 
     public static WriterUtil writerUtil;
 
     static {
         //writerUtil = new WriterUtil("quality");
         //writerUtil = new WriterUtil("platformUtility-"+BUDGET+"-"+GAMMA);
-        writerUtil = new WriterUtil("social-welfare-"+BUDGET+"-"+WORKER_NUM+"-"+GAMMA);
+        //writerUtil = new WriterUtil("social-welfare-"+BUDGET+"-"+WORKER_NUM+"-"+GAMMA);
     }
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {

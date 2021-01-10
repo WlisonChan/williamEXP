@@ -4,6 +4,7 @@ import org.csu.kmeans.Point;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Random;
 
 public class Test {
 
@@ -42,7 +43,7 @@ public class Test {
                     (Math.pow(VAL_I, V_j - AVG_VAL)),Math.pow(QUA_I, Math.abs(Q_j - AVG_QUA)));*/
                 System.out.printf("%.3f\t%.3f\t", fi,fi2);
                 System.out.println();
-            }
+        }
     }
 
     @org.junit.jupiter.api.Test
@@ -123,5 +124,61 @@ public class Test {
         // close resource
         Main.writerUtil.close();
     }
+
+    @org.junit.Test
+    public void testPExtra(){
+        calReward(60,65);
+    }
+
+    public static void calReward(double cost,double reward){
+        double pExtra = reward * (ITSIAlgorithm.itsiCal(Algorithm.ITSI_TS) - ITSIAlgorithm.itsiCal(Algorithm.ITSI_TS + Algorithm.ITSI_T));
+        System.out.println(pExtra);
+        double pCeil = Integer.MAX_VALUE;
+        for (int i = 0; i < 100; i++) {
+            pExtra++;
+
+            pCeil = Math.min(reward - cost, reward * (1 - ITSIAlgorithm.itsiCal(Algorithm.ITSI_T)));
+            //System.out.println(pCeil);
+            double p = pExtra + (pCeil - pExtra) / 2.0;
+            //double p = pCeil;
+            //System.out.println(p);
+            System.out.println(pExtra+" "+p);
+            double instanceUnity = reward + pExtra - p;
+            double postUnity = (reward + pExtra)*ITSIAlgorithm.itsiCal(Algorithm.ITSI_T);
+            String output = "\t"+instanceUnity+"\t"+postUnity;
+            System.out.println(output);
+
+        }
+    }
+
+    @org.junit.Test
+    public void testR(){
+        double r = 0.01;
+        double t = 1;
+        double p = 30;
+        for ( r = 0.01; r <= 0.1; r+=0.01) {
+            for (t = 1; t < 10; t+=0.1) {
+                double f = p*Math.pow(Math.E,-r*t);
+                System.out.print(f+"\t");
+            }
+            System.out.println();
+        }
+    }
+
+    @org.junit.Test
+    public void testP(){
+        double r = 0.03;
+        double t = 1;
+        double p = 100;
+        double pi = 3;
+        for ( t = 1; t <= 2; t+=0.1) {
+            for (pi = 3; t <= 10; t+=0.5) {
+                double f = (p-pi)*Math.pow(Math.E,-r*t);
+                System.out.print(f+"\t");
+            }
+            System.out.println();
+        }
+    }
+
 
 }
